@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ladysfit NutriCoach</title>
+<meta name="description" content="Kho kiến thức dinh dưỡng & trợ lý AI dành cho PT Ladysfit, hỗ trợ tư vấn giảm cân cho hội viên nữ.">
+<style>
+  .icon-sprite{position:absolute}
+  :root{
+    --bg:#fff6f8;
+    --surface:#ffffff;
+    --surface-alt:#ffeef3;
+    --surface-raised:#fffbfc;
+    --border:#f3d9e1;
+    --text:#2b1620;
+    --text-muted:#8a6673;
+    --text-faint:#b98a99;
+    --accent:#e0487a;
+    --accent-deep:#af2c5a;
+    --accent-soft:#ffd9e6;
+    --on-accent:#fff6f8;
+    --success:#2f8f5b;
+    --success-bg:#e3f5ea;
+    --warn:#b8790f;
+    --warn-bg:#fdf1dc;
+    --danger:#c73b4a;
+    --danger-bg:#fbe4e6;
+    --info:#3a6ea8;
+    --info-bg:#e7f0fb;
+    --shadow:0 1px 2px rgba(175,44,90,.06),0 8px 24px -12px rgba(175,44,90,.18);
+    --radius-s:10px;
+    --radius-m:16px;
+    --radius-l:24px;
+    color-scheme:light;
+  }
+  :root:not([data-theme="light"]){
+    @media (prefers-color-scheme: dark){
+      --bg:#1a1015;
+      --surface:#241720;
+      --surface-alt:#2d1c28;
+      --surface-raised:#2a1a24;
+      --border:#3d2530;
+      --text:#f7e9ee;
+      --text-muted:#cda3b1;
+      --text-faint:#8f6572;
+      --accent:#ff7fa8;
+      --accent-deep:#ffb0c9;
+      --accent-soft:#3d1f2c;
+      --on-accent:#1a1015;
+      --success:#6fd39a;
+      --success-bg:#173224;
+      --warn:#f0b256;
+      --warn-bg:#3a2a12;
+      --danger:#ff8b96;
+      --danger-bg:#3a1c20;
+      --info:#8ab6ec;
+      --info-bg:#182a3d;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 30px -14px rgba(0,0,0,.6);
+      color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#1a1015;
+    --surface:#241720;
+    --surface-alt:#2d1c28;
+    --surface-raised:#2a1a24;
+    --border:#3d2530;
+    --text:#f7e9ee;
+    --text-muted:#cda3b1;
+    --text-faint:#8f6572;
+    --accent:#ff7fa8;
+    --accent-deep:#ffb0c9;
+    --accent-soft:#3d1f2c;
+    --on-accent:#1a1015;
+    --success:#6fd39a;
+    --success-bg:#173224;
+    --warn:#f0b256;
+    --warn-bg:#3a2a12;
+    --danger:#ff8b96;
+    --danger-bg:#3a1c20;
+    --info:#8ab6ec;
+    --info-bg:#182a3d;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 30px -14px rgba(0,0,0,.6);
+    color-scheme:dark;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',sans-serif;
+    padding-inline:0;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:'Be Vietnam Pro',system-ui,sans-serif;
+    font-weight:800;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+    margin:0;
+  }
+  .mono{font-family:'JetBrains Mono',ui-monospace,monospace; font-variant-numeric:tabular-nums;}
+  p{line-height:1.6}
+  a{color:var(--accent-deep)}
+  ::selection{background:var(--accent-soft)}
+
+  /* ---------- shell ---------- */
+  .app{max-width:1180px;margin:0 auto;padding-inline:16px;}
+  header.top{
+    position:sticky; top:env(safe-area-inset-top,0px); z-index:40;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .top-inner{
+    max-width:1180px;margin:0 auto;padding:14px 16px;
+    display:flex;align-items:center;gap:14px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+  .brand .mark{
+    width:38px;height:38px;border-radius:11px;flex:none;
+    background:linear-gradient(150deg,var(--accent),var(--accent-deep));
+    display:flex;align-items:center;justify-content:center;color:var(--on-accent);
+    box-shadow:var(--shadow);
+  }
+  .brand .mark svg{width:20px;height:20px}
+  .brand .word{display:flex;flex-direction:column;line-height:1.15;min-width:0}
+  .brand .word b{font-size:16px;font-weight:800;color:var(--text)}
+  .brand .word span{font-size:11.5px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .top-actions{display:flex;align-items:center;gap:8px;flex:none}
+  .icon-btn{
+    width:38px;height:38px;border-radius:11px;border:1px solid var(--border);
+    background:var(--surface);color:var(--text);display:flex;align-items:center;justify-content:center;
+    cursor:pointer;flex:none;
+  }
+  .icon-btn svg{width:18px;height:18px}
+  .icon-btn:hover{border-color:var(--accent)}
+  .ask-btn{
+    display:flex;align-items:center;gap:8px;border:none;cursor:pointer;
+    background:linear-gradient(120deg,var(--accent),var(--accent-deep));
+    color:var(--on-accent);font-weight:700;font-size:13.5px;
+    padding:10px 16px;border-radius:99px;box-shadow:var(--shadow);
+    white-space:nowrap;
+  }
+  .ask-btn svg{width:16px;height:16px}
+
+  /* ---------- hero ---------- */
+  .hero{padding-block:28px 18px;display:flex;flex-direction:column;gap:10px}
+  .hero .eyebrow{
+    display:inline-flex;align-items:center;gap:6px;width:fit-content;
+    font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--accent-deep);background:var(--accent-soft);
+    padding:6px 12px;border-radius:99px;
+  }
+  .hero h1{font-size:clamp(26px,5vw,38px);max-width:16ch}
+  .hero p.lede{color:var(--text-muted);max-width:62ch;font-size:15px;margin:0}
+  .hero .stats{display:flex;gap:18px;flex-wrap:wrap;margin-top:6px}
+  .hero .stat b{display:block;font-size:20px;font-family:'JetBrains Mono',monospace;color:var(--accent-deep)}
+  .hero .stat span{font-size:12px;color:var(--text-muted)}
+
+  /* ---------- chip nav ---------- */
+  nav.chipnav{
+    position:sticky; top:calc(66px + env(safe-area-inset-top,0px)); z-index:30;
+    background:var(--bg); padding-block:10px; margin-bottom:6px;
+    border-bottom:1px solid var(--border);
+  }
+  .chipnav-scroll{
+    display:flex; gap:8px; overflow-x:auto; scrollbar-width:none; padding-bottom:2px;
+  }
+  .chipnav-scroll::-webkit-scrollbar{display:none}
+  .chip{
+    flex:none; display:flex; align-items:center; gap:6px;
+    padding:8px 14px; border-radius:99px; border:1px solid var(--border);
+    background:var(--surface); color:var(--text-muted); font-size:13px; font-weight:600;
+    cursor:pointer; white-space:nowrap; text-decoration:none;
+  }
+  .chip svg{width:14px;height:14px}
+  .chip.active{background:var(--accent); border-color:var(--accent); color:var(--on-accent)}
+
+  /* ---------- sections ---------- */
+  main{padding-bottom:80px}
+  section.cat{scroll-margin-top:150px; padding-block:34px 8px; border-top:1px solid var(--border)}
+  section.cat:first-of-type{border-top:none}
+  .cat-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:18px}
+  .cat-head .ic{
+    flex:none;width:46px;height:46px;border-radius:13px;background:var(--surface-alt);
+    display:flex;align-items:center;justify-content:center;color:var(--accent-deep);
+  }
+  .cat-head .ic svg{width:24px;height:24px}
+  .cat-head h2{font-size:22px}
+  .cat-head p{color:var(--text-muted);font-size:14px;margin-top:3px;max-width:60ch}
+
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+
+  details.card{
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-m);
+    padding:2px; box-shadow:var(--shadow);
+  }
+  details.card summary{
+    list-style:none; cursor:pointer; padding:15px 16px; display:flex; gap:12px; align-items:flex-start;
+  }
+  details.card summary::-webkit-details-marker{display:none}
+  .card-chevron{
+    flex:none;width:22px;height:22px;border-radius:7px;background:var(--surface-alt);
+    display:flex;align-items:center;justify-content:center;color:var(--accent-deep);
+    transition:transform .18s ease; margin-top:2px;
+  }
+  details[open] .card-chevron{transform:rotate(90deg)}
+  .card-chevron svg{width:12px;height:12px}
+  .card-title{flex:1;min-width:0}
+  .card-title h3{font-size:15.5px;font-weight:700;color:var(--text)}
+  .card-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+  .tag{font-size:10.5px;font-weight:700;letter-spacing:.02em;padding:3px 8px;border-radius:6px;background:var(--surface-alt);color:var(--accent-deep)}
+  .tag.warn{background:var(--warn-bg);color:var(--warn)}
+  .card-body{padding:0 16px 18px 50px; font-size:13.6px; color:var(--text); }
+  .card-body p{margin:0 0 10px}
+  .card-body ul{margin:0 0 10px;padding-left:18px}
+  .card-body li{margin-bottom:5px}
+  .card-body b{color:var(--accent-deep)}
+  .dose-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .dose{
+    font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:600;
+    background:var(--info-bg); color:var(--info); padding:5px 9px;border-radius:7px;
+  }
+  .callout{
+    display:flex;gap:8px;align-items:flex-start;padding:10px 12px;border-radius:10px;
+    background:var(--warn-bg); color:var(--warn); font-size:12.6px; margin-top:10px;
+  }
+  .callout svg{width:15px;height:15px;flex:none;margin-top:1px}
+  .callout.danger{background:var(--danger-bg);color:var(--danger)}
+  .callout.info{background:var(--info-bg);color:var(--info)}
+  .source-line{margin-top:10px;font-size:11.5px;color:var(--text-faint)}
+  .source-line a{color:var(--text-faint);text-decoration:underline}
+
+  footer{padding:30px 16px 100px;color:var(--text-faint);font-size:12px;text-align:center}
+
+  /* ---------- chat ---------- */
+  .chat-overlay{
+    position:fixed;inset:0;background:rgba(20,10,15,.42);backdrop-filter:blur(2px);
+    z-index:100;display:flex;justify-content:flex-end;
+    opacity:0;pointer-events:none;transition:opacity .2s ease;
+  }
+  .chat-overlay.open{opacity:1;pointer-events:auto}
+  .chat-panel{
+    width:min(420px,100%); height:100%; background:var(--surface);
+    display:flex;flex-direction:column; box-shadow:-20px 0 40px rgba(0,0,0,.18);
+    transform:translateX(16px); transition:transform .22s ease;
+    padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  .chat-overlay.open .chat-panel{transform:translateX(0)}
+  .chat-head{
+    display:flex;align-items:center;gap:10px;padding:16px;border-bottom:1px solid var(--border);
+  }
+  .chat-head .mark{
+    width:34px;height:34px;border-radius:10px;background:linear-gradient(150deg,var(--accent),var(--accent-deep));
+    display:flex;align-items:center;justify-content:center;color:var(--on-accent);flex:none;
+  }
+  .chat-head .mark svg{width:18px;height:18px}
+  .chat-head .ti{flex:1;min-width:0}
+  .chat-head .ti b{display:block;font-size:14.5px}
+  .chat-head .ti span{display:block;font-size:11.5px;color:var(--text-muted)}
+  .chat-head .status{width:8px;height:8px;border-radius:50%;background:var(--success);flex:none}
+  .chat-close{
+    width:32px;height:32px;border-radius:9px;border:1px solid var(--border);background:var(--surface);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-muted)
+  }
+  .chat-close svg{width:16px;height:16px}
+  .chat-body{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+  .msg{max-width:88%;font-size:13.6px;line-height:1.55;padding:10px 13px;border-radius:14px;white-space:pre-wrap}
+  .msg.user{align-self:flex-end;background:var(--accent);color:var(--on-accent);border-bottom-right-radius:4px}
+  .msg.bot{align-self:flex-start;background:var(--surface-alt);color:var(--text);border-bottom-left-radius:4px}
+  .msg.bot.thinking{color:var(--text-muted);font-style:italic}
+  .msg.err{align-self:flex-start;background:var(--danger-bg);color:var(--danger)}
+  .chat-suggest{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 12px}
+  .sugg{
+    font-size:12px;border:1px solid var(--border);background:var(--surface-raised);color:var(--text-muted);
+    padding:6px 10px;border-radius:99px;cursor:pointer;text-align:left;
+  }
+  .sugg:hover{border-color:var(--accent);color:var(--accent-deep)}
+  .chat-input-row{
+    display:flex;gap:8px;padding:12px 14px;border-top:1px solid var(--border);align-items:flex-end;
+  }
+  .chat-input-row textarea{
+    flex:1;resize:none;border:1px solid var(--border);border-radius:14px;padding:10px 13px;
+    font-family:inherit;font-size:13.6px;background:var(--surface);color:var(--text);max-height:110px;
+  }
+  .chat-input-row textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
+  .send-btn{
+    width:40px;height:40px;border-radius:12px;border:none;background:var(--accent);color:var(--on-accent);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none;
+  }
+  .send-btn:disabled{opacity:.45;cursor:default}
+  .send-btn svg{width:17px;height:17px}
+  .chat-disclaimer{padding:0 16px 12px;font-size:10.8px;color:var(--text-faint);line-height:1.5}
+  .fab{
+    position:fixed; right:18px; bottom:calc(18px + env(safe-area-inset-bottom,0px)); z-index:50;
+    width:56px;height:56px;border-radius:50%;border:none;cursor:pointer;
+    background:linear-gradient(150deg,var(--accent),var(--accent-deep));color:var(--on-accent);
+    display:flex;align-items:center;justify-content:center;box-shadow:0 10px 26px -8px rgba(175,44,90,.55);
+  }
+  .fab svg{width:24px;height:24px}
+  .fab.hidden{display:none}
+
+  @media (max-width:640px){
+    .card-body{padding-left:16px}
+    .hero .stats{gap:12px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important}
+  }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600&display=swap">
+</head>
+<body>
+<svg width="0" height="0" class="icon-sprite">
+  <symbol id="i-logo" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7.5-4.6-9.9-9.4C.6 7.9 2.9 4 6.8 4c2 0 3.6 1 5.2 3 1.6-2 3.2-3 5.2-3 3.9 0 6.2 3.9 4.7 7.6C19.5 16.4 12 21 12 21Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+  <symbol id="i-flame" viewBox="0 0 24 24" fill="none"><path d="M12 3c1 3-3 4-3 8a3 3 0 006 0c0-1.5-1-2-1-3.5 2 1 3 3.5 3 5.5a5 5 0 11-10 0c0-4 3-6 5-10Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+  <symbol id="i-flower" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="2.3" stroke="currentColor" stroke-width="1.5"/><path d="M12 3c1.8 0 3 1.6 2.2 3.6C13.7 7.8 12.8 8.5 12 9.7 11.2 8.5 10.3 7.8 9.8 6.6 9 4.6 10.2 3 12 3ZM12 21c1.8 0 3-1.6 2.2-3.6-.5-1.2-1.4-1.9-2.2-3.1-.8 1.2-1.7 1.9-2.2 3.1C9 19.4 10.2 21 12 21ZM3 12c0-1.8 1.6-3 3.6-2.2 1.2.5 1.9 1.4 3.1 2.2-1.2.8-1.9 1.7-3.1 2.2C4.6 15 3 13.8 3 12ZM21 12c0-1.8-1.6-3-3.6-2.2-1.2.5-1.9 1.4-3.1 2.2 1.2.8 1.9 1.7 3.1 2.2C19.4 15 21 13.8 21 12Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+  <symbol id="i-thyroid" viewBox="0 0 24 24" fill="none"><path d="M12 5v3M7 8c-2.5 0-4 2-4 4.5S4.5 17 7 17h1.5a3.5 3.5 0 003.5-3.5 3.5 3.5 0 013.5-3.5H17c2.5 0 4 2 4 4.5s-1.5 4.5-4 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24" fill="none"><path d="M20 4C10 4 4 10 4 18c0 .6.4 1 1 1 8 0 14-6 14-15 0-.6-.4-1-1 0Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 15c2-2 5-5 9-9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24" fill="none"><path d="M20 14.5A8.5 8.5 0 019.5 4 8.5 8.5 0 1020 14.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.6"/><path d="M12 2.5v2M12 19.5v2M4.5 4.5l1.4 1.4M18.1 18.1l1.4 1.4M2.5 12h2M19.5 12h2M4.5 19.5l1.4-1.4M18.1 5.9l1.4-1.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-brain" viewBox="0 0 24 24" fill="none"><path d="M9 4a3 3 0 00-3 3 3 3 0 00-1.5 5.4A3 3 0 007 17a3 3 0 003 2.8V4Zm6 0a3 3 0 013 3 3 3 0 011.5 5.4A3 3 0 0117 17a3 3 0 01-3 2.8V4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v5.5c0 4.6-3 7.8-7 9.5-4-1.7-7-4.9-7-9.5V6l7-3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 12l2 2 4-4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-sparkle" viewBox="0 0 24 24" fill="none"><path d="M12 3c.6 3.8 2.2 5.4 6 6-3.8.6-5.4 2.2-6 6-.6-3.8-2.2-5.4-6-6 3.8-.6 5.4-2.2 6-6Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M19 16c.3 1.7 1 2.4 2.7 2.7-1.7.3-2.4 1-2.7 2.7-.3-1.7-1-2.4-2.7-2.7 1.7-.3 2.4-1 2.7-2.7Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></symbol>
+  <symbol id="i-apple" viewBox="0 0 24 24" fill="none"><path d="M12 8.5c-3.5-3-8-1-8 4 0 4.5 3.3 8.5 6 8.5.9 0 1.3-.4 2-.4s1.1.4 2 .4c2.4 0 5-3 5.7-6.5.6-3.2-1.2-5.7-3.7-6-1.4-.2-2.6.6-3.2 1" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 8.5c0-2 .8-3.5 2.5-4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+  <symbol id="i-radio" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="14" r="2.3" stroke="currentColor" stroke-width="1.5"/><path d="M8.5 10.5a5 5 0 000 7M15.5 10.5a5 5 0 010 7M5.5 7.5a9 9 0 000 13M18.5 7.5a9 9 0 010 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 24 24" fill="none"><path d="M12 4l9 16H3L12 4Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 10v4.5M12 17.2v.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 11v5.5M12 8v.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24" fill="none"><path d="M3 11l17-8-6 17-3-6-8-3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24" fill="none"><path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24" fill="none"><path d="M4 12c0-4.4 3.8-8 8.5-8s8.5 3.6 8.5 8-3.8 8-8.5 8c-1 0-2-.15-2.9-.44L4 21l1.5-4.2C4.55 15.5 4 13.8 4 12Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+</svg>
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">
+      <div class="mark"><svg><use href="#i-logo"/></svg></div>
+      <div class="word"><b>Ladysfit</b><span>NutriCoach · Kiến thức dinh dưỡng cho PT</span></div>
+    </div>
+    <div class="top-actions">
+      <button type="button" class="icon-btn" id="themeToggle" aria-label="Đổi giao diện sáng/tối" title="Chế độ tối"><svg><use href="#i-moon"/></svg></button>
+      <button type="button" class="ask-btn" id="askBtnTop"><svg><use href="#i-chat"/></svg>Hỏi trợ lý</button>
+    </div>
+  </div>
+</header>
+
+<div class="app">
+  <section class="hero">
+    <span class="eyebrow">Nội bộ Ladysfit · Dành cho PT</span>
+    <h1>Sổ tay dinh dưỡng cho PT tư vấn giảm cân nữ</h1>
+    <p class="lede">Tổng hợp kiến thức dinh dưỡng, nội tiết, đường ruột, giấc ngủ và phục hồi — chọn lọc và đơn giản hoá để PT tra cứu nhanh và tư vấn cho hội viên. Có ô "Hỏi trợ lý" trả lời câu hỏi dựa trên đúng kho kiến thức này.</p>
+    <div class="stats">
+      <div class="stat"><b>10</b><span>nhóm chủ đề</span></div>
+      <div class="stat"><b>60+</b><span>mục kiến thức</span></div>
+      <div class="stat"><b>AI</b><span>trợ lý hỏi‑đáp riêng</span></div>
+    </div>
+  </section>
+
+  <nav class="chipnav">
+    <div class="chipnav-scroll" id="chipnav">
+      <a class="chip" data-target="giam-mo"><svg><use href="#i-flame"/></svg>Giảm mỡ</a>
+      <a class="chip" data-target="noi-tiet"><svg><use href="#i-flower"/></svg>Nội tiết nữ</a>
+      <a class="chip" data-target="tuyen-giap"><svg><use href="#i-thyroid"/></svg>Tuyến giáp</a>
+      <a class="chip" data-target="duong-ruot"><svg><use href="#i-leaf"/></svg>Đường ruột</a>
+      <a class="chip" data-target="giac-ngu"><svg><use href="#i-moon"/></svg>Giấc ngủ</a>
+      <a class="chip" data-target="nao-bo"><svg><use href="#i-brain"/></svg>Não &amp; thói quen</a>
+      <a class="chip" data-target="viem-nhiem"><svg><use href="#i-shield"/></svg>Viêm &amp; miễn dịch</a>
+      <a class="chip" data-target="da-collagen"><svg><use href="#i-sparkle"/></svg>Da &amp; Collagen</a>
+      <a class="chip" data-target="dinh-duong-dac-biet"><svg><use href="#i-apple"/></svg>Dinh dưỡng đặc biệt</a>
+      <a class="chip" data-target="huberman"><svg><use href="#i-radio"/></svg>Huberman Lab</a>
+    </div>
+  </nav>
+
+  <main id="mainContent"><!-- sections injected by JS from DATA --></main>
+
+  <footer>
+    Tài liệu tổng hợp nội bộ cho mục đích tham khảo &amp; đào tạo PT — không thay thế chẩn đoán y khoa.<br>
+    Với hội viên có bệnh nền (tuyến giáp, tiểu đường, rối loạn ăn uống…), luôn khuyên gặp bác sĩ trước khi đổi chế độ ăn mạnh.
+  </footer>
+</div>
+
+<button type="button" class="fab" id="fab" aria-label="Hỏi trợ lý dinh dưỡng"><svg><use href="#i-chat"/></svg></button>
+
+<div class="chat-overlay" id="chatOverlay">
+  <div class="chat-panel">
+    <div class="chat-head">
+      <div class="mark"><svg><use href="#i-logo"/></svg></div>
+      <div class="ti"><b>Trợ lý dinh dưỡng Ladysfit</b><span>Trả lời dựa trên sổ tay này</span></div>
+      <span class="status" id="chatStatus"></span>
+      <button type="button" class="chat-close" id="chatClose" aria-label="Đóng trợ lý"><svg><use href="#i-close"/></svg></button>
+    </div>
+    <div class="chat-body" id="chatBody"></div>
+    <div class="chat-suggest" id="chatSuggest"></div>
+    <div class="chat-input-row">
+      <textarea id="chatInput" rows="1" placeholder="VD: Hội viên bị chững cân sau 3 tuần IF, tư vấn sao?"></textarea>
+      <button type="button" class="send-btn" id="chatSend" aria-label="Gửi câu hỏi"><svg><use href="#i-send"/></svg></button>
+    </div>
+    <div class="chat-disclaimer">Trợ lý dựa trên kiến thức tổng hợp nội bộ, có thể sai sót — PT cần kiểm chứng trước khi tư vấn hội viên, đặc biệt với người có bệnh nền.</div>
+  </div>
+</div>
+
+<script>
+/* ============ DATA ============ */
+const DATA = [
+{id:"giam-mo", icon:"i-flame", title:"Giảm Mỡ & Kiểm Soát Cân Nặng", blurb:"Nguyên lý năng lượng, nhịn ăn gián đoạn đúng cách cho nữ, và dinh dưỡng quanh buổi tập.",
+ topics:[
+  {title:"Cân nặng thật sự gồm những gì?", tags:["Căn bản"],
+   body:`<p>Cân nặng = <b>cơ + mỡ + xương + nước</b>. Khi hội viên "giảm cân nhanh", phần lớn là <b>nước</b>, không phải mỡ. Mục tiêu đúng luôn là: <b>tăng thì tăng cơ, giảm thì giảm mỡ</b> — không chỉ nhìn số cân.</p>
+   <p>Năng lượng <b>đốt</b> ra = BMR (sống cơ bản) + NEAT (vận động vặt) + TEF (tiêu hoá) + EAT (tập luyện). Năng lượng <b>nạp</b> vào tính theo: Protein & Carb đều 4 calo/g, Chất béo 9 calo/g.</p>
+   <p>Công thức gợi ý nhanh: <b>Protein</b> ≈ số cm chiều cao (g/ngày) · <b>Carb</b> ≈ cân nặng × 2 (x3 nếu vận động nhiều) · <b>Béo</b> ưu tiên 5‑8g Omega‑3, phần còn lại đến từ dầu mỡ tự nhiên trong món ăn.</p>`},
+  {title:"Nhịn ăn gián đoạn (Intermittent Fasting) đúng kiểu — đặc biệt cho Nữ", tags:["IF","Nữ"],
+   body:`<p>IF không phải là "nhịn 16 tiếng mỗi ngày cố định" — làm vậy lâu dài cơ thể sẽ <b>thích nghi (metabolic adaptation)</b>, hạ trao đổi chất, ăn ít vẫn không giảm mỡ, thậm chí rối loạn kinh nguyệt, mất ngủ, giảm ham muốn.</p>
+   <p>Cách đúng là <b>"ngắt quãng" thật sự</b>: không áp dụng cùng 1 khung giờ mỗi ngày, mà xen kẽ ngày có IF – ngày ăn bình thường trong tuần.</p>
+   <ul><li><b>Nữ</b>: hợp với IF kiểu 20:4, áp dụng 2–3 lần/tuần (do đặc điểm sinh lý bền bỉ hơn nam).</li>
+   <li><b>Nam</b> (tham khảo): 16:8, 3–5 lần/tuần.</li></ul>
+   <p>Lợi ích chính: cải thiện độ nhạy Insulin, tăng hoóc-môn đốt mỡ Leptin nếu dùng đúng cách "ngắt quãng" thay vì cố định mỗi ngày.</p>
+   <div class="callout warn"><svg><use href="#i-warn"/></svg>Không áp dụng cho hội viên đang có kinh nguyệt không đều, tiền sử rối loạn ăn uống, hoặc đang mang thai/cho con bú.</div>`},
+  {title:"Các kiểu Fasting đặc biệt (nâng cao)", tags:["Nâng cao","Cẩn trọng"],
+   body:`<p><b>Prolonged fasting</b> (24–72h): hỗ trợ "trẻ hoá tế bào", thường dùng detox 1 lần/tháng cho người đã quen nhịn ăn.</p>
+   <p><b>Liquid fasting</b> (24–48h, chỉ uống nước / nước hầm xương): tốt cho phục hồi niêm mạc ruột, ít khắc nghiệt hơn — gợi ý 2 lít nước hầm xương/ngày chia 4 lần nếu áp dụng.</p>
+   <div class="callout danger"><svg><use href="#i-warn"/></svg><b>Dry fasting</b> (không ăn <i>và không uống nước</i> 24h) rất mạnh nhưng <b>nguy hiểm</b> — chỉ dành cho người có kinh nghiệm nhịn ăn trên 5 năm. PT <b>không nên</b> tư vấn kiểu này cho hội viên phổ thông.</div>`},
+  {title:"Bữa ăn sau tập — tối ưu hồi phục", tags:["Sau tập"],
+   body:`<p>Gợi ý theo thứ tự ưu tiên, PT có thể chọn 2–3 món phù hợp hội viên thay vì áp hết:</p>
+   <ul><li><b>Cà phê đen</b> trước/ trong ngày tập — tránh trước ngủ 4 tiếng.</li>
+   <li><b>Omega‑3</b>: tăng tổng hợp protein sau tập, giảm viêm cơ.</li>
+   <li><b>Carb nhanh + trái cây có Vitamin C + chút muối</b>: đưa dinh dưỡng vào cơ nhanh hơn.</li>
+   <li><b>Đạm từ thịt đỏ</b> (nạc): giàu Creatine, Carnitine hỗ trợ tổng hợp cơ.</li>
+   <li><b>EAA</b> (axit amin thiết yếu) cùng bữa đạm.</li>
+   <li><b>Cacao nguyên chất</b>: hỗ trợ phát triển cơ bắp nhẹ.</li></ul>
+   <div class="dose-row">
+     <span class="dose">Omega-3: 4g</span><span class="dose">EAA: 8-10g</span><span class="dose">Cacao: 10g</span>
+     <span class="dose">Đạm đỏ: kg × 4 (Nữ)</span>
+   </div>`},
+  {title:"Vì sao giảm cân bị \"chững\"? — Leptin Resistance", tags:["Chững cân"],
+   body:`<p>Leptin là hoóc-môn "báo no & đốt mỡ" giữa tế bào mỡ và não. Giảm cân nhanh, ăn quá ít, hoặc IF cố định mỗi ngày kéo dài khiến Leptin xuống thấp → não hiểu nhầm là "đói", chuyển sang <b>giữ mỡ</b> thay vì đốt, dù hội viên vẫn ăn ít.</p>
+   <p><b>Giải pháp cho PT tư vấn:</b> không giảm calo quá sâu/quá lâu liên tục, xen kẽ ngày ăn đủ – ngày thâm hụt, ưu tiên giấc ngủ và giảm stress thay vì chỉ cắt ăn thêm.</p>`}
+ ]},
+
+{id:"noi-tiet", icon:"i-flower", title:"Nội Tiết Tố Nữ & Cân Bằng Hormone", blurb:"Estrogen, kháng Insulin và Cortisol — 3 hoóc-môn ảnh hưởng trực tiếp tới việc giảm mỡ ở nữ.",
+ topics:[
+  {title:"Estrogen \"tốt\" và \"xấu\"", tags:["Estrogen"],
+   body:`<p>Estrogen dạng <b>2‑Hydroxy</b> là dạng tốt: chống oxy hoá, hỗ trợ đốt mỡ. Dạng <b>4 & 16‑Hydroxy</b> là dạng "xấu", tích tụ khi đường huyết cao, thừa mỡ, hoặc ăn nhiều đậu nành GMO — liên quan viêm nhiễm, tích mỡ, giảm ham muốn.</p>
+   <p><b>Thực phẩm giúp cân bằng:</b></p>
+   <ul><li>Họ nhà Cải (bông cải, cải brussels): chứa DIM giúp gan lọc estrogen xấu.</li>
+   <li>Nấm (đặc biệt Nấm Linh Chi/ Lion's Mane): giảm enzyme Aromatase (enzyme biến hoóc-môn khác thành estrogen xấu).</li>
+   <li>Tảo xoắn Spirulina: tiền chất Glutathione, bảo vệ gan.</li>
+   <li>Omega‑3/CoQ10: giảm viêm liên quan estrogen xấu.</li></ul>
+   <div class="dose-row"><span class="dose">Rau họ Cải: 200-250g/ngày</span><span class="dose">Nấm: 100-150g/ngày</span><span class="dose">Omega-3: 5-8g/ngày</span></div>
+   <p><b>Hạn chế:</b> đậu nành/soy chế biến sẵn (thường là GMO, gây rối loạn tín hiệu estrogen).</p>`},
+  {title:"Kháng Insulin — dấu hiệu & cách cải thiện", tags:["Insulin"],
+   body:`<p>Khoảng 50% người trưởng thành đang kháng Insulin ở mức độ nào đó. <b>6 dấu hiệu nhận biết:</b> da sạm/ửng đỏ bất thường, ngứa da không rõ nguyên nhân, hay tiểu đêm, hay khát nước, đói dù mới ăn, vết thương lâu lành.</p>
+   <p><b>Cách cải thiện PT có thể tư vấn:</b></p>
+   <ul><li>Tập tạ đều đặn — cách hạ Insulin nhanh và bền vững nhất.</li>
+   <li>Ăn theo nguyên tắc "Carb vào buổi tối" (1 bữa tinh bột chính trong ngày).</li>
+   <li>Thêm gừng, quế vào món ăn — hỗ trợ tế bào hấp thu đường tốt hơn.</li>
+   <li>Bổ sung Magnesium, kẽm; ăn măng tây/nấm.</li></ul>
+   <div class="dose-row"><span class="dose">Protein tối thiểu Nữ: 30-50g/bữa chính</span><span class="dose">Magnesium: 400-800mg/ngày</span></div>`},
+  {title:"Cortisol & Suy tuyến thượng thận (Adrenal Fatigue)", tags:["Cortisol","Stress"],
+   body:`<p>Tuyến thượng thận tiết Cortisol để đối phó stress (tinh thần, thể chất, hoặc từ chế độ ăn). Khi quá tải kéo dài, nhịp Cortisol tự nhiên (cao sáng, thấp tối) bị đảo lộn → hội viên mệt mỏi dù ngủ đủ, khó ngủ về đêm, thèm đồ ngọt/mặn, tăng cân dù ăn ít, rụng tóc, hay chóng mặt khi đứng dậy.</p>
+   <p><b>Hướng cải thiện:</b> tập luyện nhẹ‑vừa (tránh tập quá nặng khi đang mệt mỏi kéo dài), nghỉ giữa hiệp ngắn hơn, và các dưỡng chất hỗ trợ:</p>
+   <div class="dose-row"><span class="dose">Ashwagandha: 500mg-2g/ngày</span><span class="dose">Magnesium: 400-600mg trước ngủ</span><span class="dose">Vitamin C: liều cao, chia nhiều lần</span><span class="dose">Omega-3: 4-6g/ngày (6-15g nếu suy nặng)</span></div>
+   <div class="callout info"><svg><use href="#i-info"/></svg>Dấu hiệu nghi ngờ suy tuyến thượng thận nặng (chóng mặt khi đứng dậy, mất kinh, kiệt sức kéo dài) nên khuyên hội viên đi khám, không tự xử lý bằng tập luyện.</div>`},
+  {title:"Góc nhìn khoa học thần kinh về hoóc-môn nữ (Huberman Lab)", tags:["Huberman","Tham khảo"],
+   body:`<p>Theo tập podcast của TS. Sara Gottfried trên Huberman Lab: hệ vi sinh đường ruột ảnh hưởng cân bằng estrogen qua nhóm vi khuẩn gọi là <b>"estrobolome"</b> — nên khuyến khích hội viên ăn đa dạng rau củ ("5 màu mỗi ngày") thay vì chỉ tập trung 1-2 loại.</p>
+   <p>Táo bón mãn tính ở nữ (khá phổ biến) là dấu hiệu mất cân bằng hệ thần kinh tự chủ & nội tiết — nên hỏi hội viên về tiêu hoá khi tư vấn giảm cân, không chỉ hỏi cân nặng.</p>
+   <p>Magnesium thiếu hụt rất phổ biến (ước tính 70-80% người trưởng thành) — ưu tiên bổ sung qua thực phẩm/viên uống khi hội viên hay stress, khó ngủ.</p>
+   <p class="source-line">Nguồn: <a href="https://www.hubermanlab.com/episode/dr-sara-gottfried-how-to-optimize-female-hormone-health-for-vitality-and-longevity" target="_blank" rel="noopener">Huberman Lab – Dr. Sara Gottfried, Female Hormone Health</a></p>`}
+ ]},
+
+{id:"tuyen-giap", icon:"i-thyroid", title:"Sức Khỏe Tuyến Giáp", blurb:"Tuyến giáp ảnh hưởng trực tiếp tới tốc độ trao đổi chất — rất quan trọng khi tư vấn giảm cân không hiệu quả.",
+ topics:[
+  {title:"Tuyến giáp là gì & vì sao quan trọng khi giảm cân", tags:["Căn bản"],
+   body:`<p>Tuyến giáp nằm trước cổ, tiết 3 hoóc-môn chính (trong đó T3, T4) điều khiển <b>tốc độ trao đổi chất</b> của toàn cơ thể. Hội viên ăn đúng, tập đúng mà vẫn không giảm cân — nên nghĩ tới khả năng tuyến giáp hoạt động kém.</p>`},
+  {title:"Cường giáp vs Suy giáp", tags:["So sánh"],
+   body:`<p><b>Cường giáp</b> (tuyến giáp hoạt động quá mức): sụt cân nhanh bất thường, tim đập nhanh, hồi hộp, ra mồ hôi nhiều, khó ngủ.</p>
+   <p><b>Suy giáp</b> (tuyến giáp hoạt động yếu): mệt mỏi, tăng cân dù ăn ít, sợ lạnh, da khô, rụng tóc, trầm cảm nhẹ — nhóm này hay gặp ở hội viên "tập mãi không xuống cân".</p>
+   <div class="callout info"><svg><use href="#i-info"/></svg>Cả hai đều cần chẩn đoán bằng xét nghiệm máu — PT chỉ nên gợi ý hội viên đi khám khi nghi ngờ, không tự chẩn đoán.</div>`},
+  {title:"Bệnh Graves, Viêm tuyến giáp & Hashimoto, Bướu tuyến giáp (tóm tắt)", tags:["Bệnh lý"],
+   body:`<p><b>Graves</b>: dạng cường giáp tự miễn phổ biến nhất — chế độ ăn nên bổ sung canxi, Vitamin D, Magnesium, Selenium; hạn chế i-ốt dư thừa và thực phẩm chế biến sẵn.</p>
+   <p><b>Viêm tuyến giáp Hashimoto</b>: dạng suy giáp tự miễn phổ biến nhất, thường kèm mệt mỏi kéo dài — chế độ ăn chống viêm (giống mục Viêm nhiễm) hỗ trợ tốt.</p>
+   <p><b>Nhân/bướu tuyến giáp (Thyroid Nodules)</b>: khối u ở tuyến giáp, đa phần lành tính nhưng cần theo dõi y tế; hạn chế thực phẩm chế biến sẵn, ưu tiên rau củ tươi.</p>`},
+  {title:"Thực phẩm bổ sung hỗ trợ tuyến giáp", tags:["Bổ sung"],
+   body:`<p>4 vi chất quan trọng nhất cho chức năng tuyến giáp:</p>
+   <div class="dose-row"><span class="dose">Vitamin D</span><span class="dose">Kẽm (Zinc)</span><span class="dose">Magnesium</span><span class="dose">Selenium (hạt Brazil)</span></div>
+   <p>Ăn hải sản + rong biển/tảo vào bữa sáng sau khi ngủ dậy giúp hỗ trợ hoóc-môn tuyến giáp phục hồi sau 1 đêm (đặc biệt hữu ích cho người áp dụng IF).</p>`},
+  {title:"Tuyến yên — \"nhạc trưởng\" điều khiển tuyến giáp", tags:["Tuyến yên"],
+   body:`<p>Tuyến yên nằm trong não, điều tiết hầu hết các tuyến nội tiết khác (bao gồm tuyến giáp). Rối loạn tuyến yên có thể gây rối loạn kinh nguyệt, mệt mỏi, rối loạn tăng trưởng. Chế độ ăn chống viêm + đủ vi chất là nền tảng hỗ trợ chung.</p>`}
+ ]},
+
+{id:"duong-ruot", icon:"i-leaf", title:"Sức Khỏe Đường Ruột", blurb:"Hệ vi sinh đường ruột quyết định hấp thu dinh dưỡng, miễn dịch và cả tâm trạng — nền tảng của mọi kế hoạch dinh dưỡng.",
+ topics:[
+  {title:"Hệ vi sinh đường ruột (Gut Microbiome) là gì", tags:["Căn bản"],
+   body:`<p>Ruột chứa hơn ngàn tỷ vi khuẩn "cộng sinh" gồm 2 nhóm: <b>Probiotic</b> (lợi khuẩn sống) và <b>Prebiotic</b> (chất xơ nuôi lợi khuẩn). Mất cân bằng nhóm này liên quan tới béo phì, viêm nhiễm, dị ứng và cả stress/rối loạn tâm lý.</p>
+   <p><b>Thực phẩm Probiotic tốt:</b> yaua (không đường), kim chi/cải chua, súp miso chưa tiệt trùng.</p>
+   <p><b>Thực phẩm Prebiotic tốt nhất:</b> tỏi, măng tây, atiso (artichoke) — atiso còn hỗ trợ tiêu hoá chất béo nhờ kích thích mật.</p>`},
+  {title:"Leaky Gut, SIBO, IBS — các rối loạn ruột thường gặp", tags:["Rối loạn"],
+   body:`<p><b>Leaky Gut</b> (rò rỉ ruột): lớp niêm mạc ruột bị tổn thương do ăn nhiều dầu mỡ/đường/rượu bia, để độc tố lọt vào máu gây viêm toàn thân. Cải thiện bằng nước hầm xương, men vi sinh, hạn chế đồ chiên xào.</p>
+   <p><b>SIBO</b> (vi khuẩn phát triển quá mức ở ruột non): đầy hơi, đau bụng sau ăn, tiêu chảy/táo bón. Nguyên nhân thường là acid dạ dày yếu, stress kéo dài.</p>
+   <p><b>IBS</b> (hội chứng ruột kích thích): 3 dạng — tiêu chảy (IBS-D), táo bón (IBS-C), hỗn hợp (IBS-M); liên quan chặt tới stress/cortisol.</p>
+   <div class="callout info"><svg><use href="#i-info"/></svg>Hội viên hay đau bụng/đầy hơi kéo dài khi đổi chế độ ăn nên được khuyên khám tiêu hoá — đừng chỉ đổi thực đơn liên tục.</div>`},
+  {title:"GERD (trào ngược dạ dày) & vi khuẩn H. Pylori", tags:["Dạ dày"],
+   body:`<p>Trào ngược axit thường do <b>stress</b> (cortisol làm giãn van dạ dày–thực quản bất thường) và <b>thiếu acid dạ dày</b> (hypochlorhydria) — không phải lúc nào cũng do dư axit như nhiều người nghĩ.</p>
+   <p><b>Gợi ý ăn uống cải thiện:</b> men vi sinh (yaua, kim chi, kombucha), giấm táo pha loãng sau ăn, bổ sung Magnesium & Vitamin D3, tránh đồ cay và nước có gas.</p>
+   <p><b>H. Pylori</b> là vi khuẩn phổ biến gây viêm loét dạ dày — nếu hội viên có triệu chứng ợ nóng kéo dài, đau bụng khi đói, nên khuyên xét nghiệm hơi thở/máu và điều trị theo bác sĩ (không tự dùng kháng sinh).</p>`},
+  {title:"Công thức lên men Probiotic tự làm tại nhà", tags:["Công thức"],
+   body:`<p>Vài công thức đơn giản PT có thể hướng dẫn hội viên tự làm:</p>
+   <ul><li><b>Kefir (nấm sữa)</b>: 10g nấm men + 1L sữa tách béo không đường, ủ 12-24h nơi khô thoáng, dùng 250-500ml sau bữa tối.</li>
+   <li><b>Sauerkraut (bắp cải muối)</b>: bắp cải tím thái nhỏ + nước ép cần tây ngập mặt, lên men 7-14 ngày nơi thoáng mát.</li>
+   <li><b>Tỏi ngâm giấm</b>: tỏi + giấm rượu vang đỏ + muối hồng + đường, ngâm tối thiểu 7 ngày (tối ưu 1 tháng), dùng 2 tép/ngày.</li>
+   <li><b>Nghệ gừng lên men</b>: nghệ + gừng tươi nạo nhuyễn + giấm táo, ủ 7 ngày, dùng 2g/ngày.</li></ul>`},
+  {title:"Enzyme tiêu hoá & không dung nạp Histamine", tags:["Enzyme"],
+   body:`<p>Men tiêu hoá chính: Amylase (phân nhỏ tinh bột), Protease/Pepsin (đạm), Lipase (chất béo). Thiếu men gây đầy bụng, mệt mỏi sau ăn dù ăn ít.</p>
+   <p><b>Nguồn enzyme tự nhiên:</b> kiwi, đu đủ, thơm, gừng (đạm); mật ong, cà chua (tinh bột); bơ (chất béo); rau lên men (đủ loại men).</p>
+   <p>Hội viên hay bị ngứa/nổi mẩn/tiêu chảy sau khi ăn hải sản, đồ lên men có thể không dung nạp <b>Histamine</b> — không nhất thiết là dị ứng thực phẩm cụ thể.</p>`}
+ ]},
+
+{id:"giac-ngu", icon:"i-moon", title:"Giấc Ngủ & Phục Hồi", blurb:"Ngủ kém phá hỏng mọi nỗ lực giảm mỡ — Cortisol tăng, thèm ăn tăng, hồi phục cơ kém.",
+ topics:[
+  {title:"5 cách tăng Melatonin tự nhiên (dễ áp dụng nhất)", tags:["Melatonin"],
+   body:`<ul><li><b>Tắm nắng buổi sáng</b> 30-45 phút, khung 7-9h sáng — thiết lập đồng hồ sinh học.</li>
+   <li><b>Tắm/dội nước lạnh</b> 5-10 phút trước ngủ, sau đó vào phòng mát 18-20°C.</li>
+   <li><b>Ánh sáng đỏ (Red Light)</b> buổi tối thay vì ánh sáng xanh từ điện thoại/TV.</li>
+   <li><b>Chất xơ hoà tan</b> (tỏi/nấm/kimchi/măng tây/bông cải/bơ luân phiên) vào bữa thứ 2 trong ngày — nuôi vi khuẩn sản sinh serotonin (tiền chất melatonin).</li>
+   <li><b>Thở 4-7-8</b>: hít mũi 4 giây – giữ hơi 7 giây – thở miệng 8 giây, lặp lại trước ngủ.</li></ul>`},
+  {title:"5 thực phẩm hỗ trợ giấc ngủ", tags:["Thực phẩm"],
+   body:`<div class="dose-row">
+     <span class="dose">Tart Cherry: 500mg trước ngủ 1h</span>
+     <span class="dose">Vitamin B6: 1.5-2mg</span>
+     <span class="dose">Magnesium: 400-600mg</span>
+     <span class="dose">Omega-3: 4-8g</span>
+   </div>
+   <p>Ngoài ra: 1 phần tinh bột nhanh + đạm nhẹ (sữa/sữa chua/gà/cá hồi) trước ngủ ~2 tiếng giúp Tryptophan lên não dễ hơn, hỗ trợ sản sinh Melatonin — người kiêng hoàn toàn tinh bột buổi tối dễ mất ngủ hơn vì lý do này.</p>`},
+  {title:"Hệ Detox cơ thể — vì sao vận động & xông hơi giúp ngủ ngon", tags:["Detox"],
+   body:`<p><b>Hệ Bạch Huyết</b> "dọn rác" khắp cơ thể nhờ chuyển động — khuyên hội viên vận động toàn thân (không ngồi lâu) để hệ này lưu thông tốt.</p>
+   <p><b>Hệ Detox Não (Glymphatic)</b> chỉ hoạt động mạnh khi ngủ sâu — thiếu ngủ khiến "rác não" (liên quan đau đầu, đãng trí) tích tụ. Xông hơi 3 lần/tuần sau tập + ngủ đủ giúp dọn rác não hiệu quả hơn.</p>`},
+  {title:"Ánh sáng đỏ (Red Light Therapy) & Binaural Beats", tags:["Công cụ hỗ trợ"],
+   body:`<p><b>Red Light Therapy</b>: đèn/thiết bị ánh sáng đỏ hỗ trợ giảm viêm, cải thiện da & collagen, hỗ trợ giấc ngủ và hồi phục sau tập.</p>
+   <p><b>Binaural Beats</b> (âm thanh 2 tần số khác nhau ở 2 tai): hỗ trợ đưa não vào sóng thư giãn (Alpha/Theta), có thể gợi ý cho hội viên hay stress/khó ngủ nghe trước khi ngủ như một công cụ hỗ trợ thêm.</p>`}
+ ]},
+
+{id:"nao-bo", icon:"i-brain", title:"Não Bộ, Cảm Xúc & Thói Quen Ăn Uống", blurb:"Hiểu vì sao hội viên \"thèm đồ ngọt\" hay \"ăn mất kiểm soát\" để tư vấn đúng gốc rễ thay vì chỉ trách ý chí.",
+ topics:[
+  {title:"Rối loạn ăn uống (BED) — ăn nhiều/ăn bậy mất kiểm soát", tags:["BED"],
+   body:`<p>BED (Binge Eating Disorder) rất phổ biến ở người từng ăn kiêng khắc nghiệt: hay ăn vặt đồ ngọt mỗi 2-3 tiếng, ăn nhiều mà vẫn không thấy no, kiêng một thời gian rồi "sập" ăn mất kiểm soát.</p>
+   <p><b>Gốc rễ:</b> vòng lặp Dopamine — càng ăn đồ ngọt/béo thường xuyên, não càng cần nhiều hơn mà thoả mãn càng ít (giống cơ chế nghiện mạng xã hội).</p>
+   <p><b>Biện pháp PT có thể áp dụng:</b></p>
+   <ul><li>Ăn theo khung giờ cố định, hạn chế snack ngoài giờ.</li>
+   <li>Khi thèm ăn bậy: gọi điện cho ai đó, đi bộ, hoặc hít thở sâu 3 lần thay vì ăn ngay.</li>
+   <li>Ăn đủ đạm mỗi bữa (đạm kích thích hoóc-môn no CCK tự nhiên).</li>
+   <li>Bổ sung Probiotic, Magnesium, Matcha (hỗ trợ hoóc-môn no/ngán PYY, CCK).</li></ul>
+   <div class="callout warn"><svg><use href="#i-warn"/></svg>Trường hợp nặng (ăn mất kiểm soát thường xuyên, ảnh hưởng tâm lý) nên giới thiệu chuyên gia tâm lý/trị liệu — CBT (trị liệu hành vi nhận thức) hiệu quả tới 80%.</div>`},
+  {title:"Hệ Limbic (Hệ Viền) — \"trung tâm cảm xúc\" quyết định thói quen", tags:["Limbic"],
+   body:`<p>Hệ Limbic trong não kiểm soát cảm xúc và hành vi lặp lại (ăn, ngủ, thói quen). PT hiểu sơ lược để tư vấn hội viên dễ đồng cảm hơn thay vì chỉ trách "thiếu ý chí":</p>
+   <ul><li><b>Amygdala</b>: khuếch đại nỗi sợ/ám ảnh — 1 lần tập sai tư thế bị đau có thể khiến hội viên "sợ" bài tập đó mãi.</li>
+   <li><b>Hippocampus</b>: lưu ký ức gắn với cảm xúc — vì sao hội viên hay tìm tới đồ ăn "junk" khi buồn (ký ức vui gắn với món đó).</li>
+   <li><b>Prefrontal Cortex</b>: vùng lý trí, kế hoạch tương lai — càng stress/thiếu ngủ, vùng này càng yếu, khiến hội viên khó kiên trì kế hoạch ăn uống.</li></ul>`},
+  {title:"4 thực phẩm tốt cho não & tinh thần", tags:["Thực phẩm"],
+   body:`<div class="dose-row">
+     <span class="dose">Nghệ (Curcumin): 8g/ngày</span>
+     <span class="dose">Berries (việt quất...): 100-150g</span>
+     <span class="dose">Lion's Mane: 1-2g bổ sung</span>
+     <span class="dose">Cacao/Matcha: 10g mỗi loại</span>
+   </div>
+   <p>Nghệ giúp bảo vệ tế bào não, họ berries chống oxy hoá mạnh, Lion's Mane hỗ trợ dẫn truyền thần kinh, Cacao/Matcha hỗ trợ tỉnh táo & giảm thèm đồ ngọt (dùng matcha ngay sau khi ngủ dậy hoặc trước tập, cacao sau bữa ăn/tập).</p>`}
+ ]},
+
+{id:"viem-nhiem", icon:"i-shield", title:"Viêm Nhiễm & Miễn Dịch", blurb:"Viêm mãn tính âm thầm cản trở giảm mỡ, gây đau nhức và mệt mỏi kéo dài.",
+ topics:[
+  {title:"Viêm cấp (tốt) và viêm mãn tính (xấu)", tags:["Căn bản"],
+   body:`<p>Viêm là phản ứng tự nhiên để hồi phục (ví dụ cơ sưng/đau sau tập tạ) — đây là <b>viêm cấp</b>, hoàn toàn bình thường. Khi viêm kéo dài không hồi phục kịp sẽ thành <b>viêm mãn tính</b>: đau nhức xương khớp, mụn kéo dài, mất ngủ, mệt mỏi dai dẳng.</p>
+   <p><b>4 nguyên nhân chính gây viêm mãn tính:</b> (1) AGEs — nấu đạm ở nhiệt độ cao + đường huyết cao; (2) thừa cân/mỡ; (3) hệ ruột yếu (Leaky Gut); (4) stress kéo dài (Cortisol cao liên tục).</p>`},
+  {title:"5 thực phẩm hồi phục viêm tốt nhất", tags:["Thực phẩm"],
+   body:`<div class="dose-row">
+     <span class="dose">Củ dền: 150-200g/ngày</span>
+     <span class="dose">Dứa/thơm: 100-150g/ngày</span>
+     <span class="dose">Tỏi: không giới hạn</span>
+     <span class="dose">Nghệ: 5-10g/ngày</span>
+     <span class="dose">Omega-3: 8-10g/ngày</span>
+   </div>
+   <p>Dứa/thơm đặc biệt tốt cho vận động viên sau tập (enzyme Bromelain giảm đau nhức cơ, khớp).</p>`},
+  {title:"NAD & Glutathione — chống lão hoá tế bào", tags:["Chống lão hoá"],
+   body:`<p><b>NAD</b> là "nguồn năng lượng" của từng tế bào, giảm dần theo tuổi. Cách tăng NAD tự nhiên: tập luyện, nhịn ăn gián đoạn, ăn thực phẩm giàu Niacin (B3).</p>
+   <p><b>Glutathione</b> là chất chống oxy hoá mạnh nhất cơ thể tự sản xuất (chủ yếu ở gan), giúp phục hồi niêm mạc ruột. Bổ sung trực tiếp kém hiệu quả — nên bổ sung tiền chất là Protein (Whey) và NAC.</p>
+   <div class="dose-row"><span class="dose">NAC: 600-1800mg/ngày, chia 2-3 bữa</span></div>`}
+ ]},
+
+{id:"da-collagen", icon:"i-sparkle", title:"Da, Collagen & Body Care", blurb:"Liên quan trực tiếp tới mục tiêu \"săn chắc, trẻ hoá\" mà nhiều hội viên nữ quan tâm song song với giảm cân.",
+ topics:[
+  {title:"Collagen — 6 tác dụng chính & cách tăng tổng hợp", tags:["Collagen"],
+   body:`<p>Collagen là nhóm protein nhiều nhất cơ thể (~1/4 tổng cân nặng), ảnh hưởng: <b>da</b>, <b>xương khớp</b>, <b>hệ tiêu hoá</b>, <b>giấc ngủ</b>, <b>sức khoẻ gan</b>, <b>cơ bắp</b>.</p>
+   <p><b>Cách tăng tổng hợp Collagen tự nhiên:</b> đủ Vitamin C (chanh, ổi), Protein đủ lượng, nước hầm xương, hạn chế đường huyết cao kéo dài (đường phá huỷ Collagen qua AGEs).</p>`},
+  {title:"Gua Sha toàn thân — góc nhìn Đông y", tags:["Body care","Tham khảo"],
+   body:`<p>Gua sha ("cạo gió") theo Đông y giúp kích hoạt tuần hoàn tại chỗ, giảm căng cơ — có thể gợi ý như liệu pháp thư giãn bổ trợ song song tập luyện, không thay thế cho vận động hay dinh dưỡng.</p>
+   <div class="callout info"><svg><use href="#i-info"/></svg>Đây là kiến thức Đông y truyền thống, chưa có nhiều bằng chứng khoa học hiện đại đầy đủ — nên giới thiệu như một lựa chọn thư giãn, không cam kết hiệu quả y khoa.</div>`}
+ ]},
+
+{id:"dinh-duong-dac-biet", icon:"i-apple", title:"Dinh Dưỡng Đặc Biệt", blurb:"Các trường hợp cần lưu ý riêng: ăn chay, dị ứng thực phẩm ẩn, và nhóm thực phẩm hay bị hiểu lầm là \"lành mạnh\".",
+ topics:[
+  {title:"Hội viên ăn chay/thuần chay — bù đủ Sắt & B12", tags:["Ăn chay"],
+   body:`<p>2 vi chất hay thiếu nhất ở người ăn chay:</p>
+   <p><b>Sắt (Iron)</b>: ưu tiên sắt thực vật (đậu, rau lá xanh đậm) kết hợp Vitamin C để tăng hấp thu; tránh uống trà/cà phê ngay sau bữa ăn giàu sắt.</p>
+   <p><b>B12</b>: hầu như chỉ có trong thực phẩm động vật — người ăn chay/thuần chay nên bổ sung men dinh dưỡng (nutritional yeast) hoặc viên uống Methylcobalamin.</p>
+   <p><b>Đạm hoàn chỉnh</b>: kết hợp đa dạng nguồn (đậu + ngũ cốc, hoặc Pea Protein + EAA bổ sung); Spirulina cũng là nguồn đạm thực vật tốt.</p>`},
+  {title:"Nhóm thực phẩm dễ hiểu lầm là \"eat clean\" nhưng cần cẩn trọng", tags:["Cẩn trọng"],
+   body:`<p><b>Hạt & đậu (hạnh nhân, điều, đậu nành, đậu phộng)</b>: chứa Lectin cao, có thể kích ứng niêm mạc ruột nếu ăn sống/số lượng lớn thường xuyên — nên ngâm nước muối hồng 16-24h trước khi chế biến.</p>
+   <p><b>Yến mạch/gạo lứt chế biến sai cách</b> (không ngâm): chứa Phytic Acid cản trở hấp thu khoáng chất (sắt, kẽm, magie).</p>
+   <p><b>Chất tạo ngọt nhân tạo</b> (trong Whey, thực phẩm thay thế bữa ăn): dù 0 calo vẫn có thể ảnh hưởng hệ ruột và độ nhạy Insulin nếu dùng thường xuyên — ưu tiên vị ngọt tự nhiên ở mức vừa phải.</p>
+   <p><b>Sữa hạt/bơ đậu phộng công nghiệp</b>: để ý thành phần Emulsifier (chất nhũ hoá) — dùng nhiều có thể ảnh hưởng lớp bảo vệ niêm mạc ruột.</p>`}
+ ]},
+
+{id:"huberman", icon:"i-radio", title:"Cập Nhật Từ Huberman Lab", blurb:"Kiến thức khoa học thần kinh & sinh lý học mới nhất, chọn lọc và Việt hoá để bổ sung cho sổ tay này.",
+ topics:[
+  {title:"Công cụ đốt mỡ dựa trên khoa học thần kinh", tags:["Đốt mỡ","Huberman"],
+   body:`<p>Andrew Huberman tổng hợp các công cụ "đòn bẩy" giúp tăng đốt mỡ ngoài việc chỉ cắt calo:</p>
+   <ul><li><b>NEAT chủ động</b> (rung chân, đứng dậy đi lại thường xuyên): có thể tạo khác biệt tới 800-2.500 calo/ngày giữa người "hay cựa quậy" và người ít vận động.</li>
+   <li><b>Tiếp xúc lạnh gây run</b>: ngâm nước lạnh tới khi bắt đầu run, ra – nghỉ 1-3 phút – vào lại, lặp 3 lần, 1-5 lần/tuần — kích hoạt mỡ nâu đốt năng lượng.</li>
+   <li><b>Tập cường độ cao rồi chuyển sang cardio nhẹ (Zone 2)</b>, tốt nhất khi bụng đói.</li>
+   <li><b>Caffeine 100-400mg</b> trước tập 30-40 phút hỗ trợ đốt mỡ trong buổi tập.</li></ul>
+   <p class="source-line">Nguồn: <a href="https://www.hubermanlab.com/episode/how-to-lose-fat-with-science-based-tools" target="_blank" rel="noopener">Huberman Lab – How to Lose Fat with Science-Based Tools</a></p>`},
+  {title:"Nền tảng bắt buộc trước khi tối ưu giảm mỡ", tags:["Nền tảng"],
+   body:`<p>Theo Huberman Lab, trước khi áp dụng các "mẹo" giảm mỡ nâng cao, cần đảm bảo nền tảng: ngủ đủ &amp; đúng giờ, đủ Omega‑3 (EPA từ cá/thịt), đủ Selenium &amp; i-ốt cho tuyến giáp (hạt Brazil), và hệ ruột khoẻ (thực phẩm lên men mỗi ngày) — đúng những mảng đã có trong sổ tay này, cho thấy các nguồn kiến thức tương đồng nhau.</p>`},
+  {title:"Sức khoẻ hormone nữ theo góc nhìn y học chính xác (precision medicine)", tags:["Hormone nữ","Huberman"],
+   body:`<p>Phụ nữ nên biết mức nội tiết nền (estrogen, progesterone, testosterone) từ tuổi 20 để so sánh khi có thay đổi bất thường. Testosterone ở nữ giảm dần ~1%/năm từ tuổi 20 — ảnh hưởng cơ bắp và năng lượng theo thời gian, không chỉ là chuyện của nam giới.</p>
+   <p>5 phút/ngày tập thở "cyclic sighing" (hít đúp vào mũi, thở dài ra miệng) được nghiên cứu cải thiện tâm trạng và giấc ngủ — PT có thể hướng dẫn hội viên hay stress.</p>
+   <p class="source-line">Nguồn: <a href="https://www.hubermanlab.com/episode/dr-sara-gottfried-how-to-optimize-female-hormone-health-for-vitality-and-longevity" target="_blank" rel="noopener">Huberman Lab – Dr. Sara Gottfried</a></p>`}
+ ]}
+];
+
+/* ============ RENDER SECTIONS ============ */
+const main = document.getElementById('mainContent');
+DATA.forEach(cat=>{
+  const sec = document.createElement('section');
+  sec.className='cat'; sec.id=cat.id;
+  sec.innerHTML = `
+    <div class="cat-head">
+      <div class="ic"><svg><use href="#${cat.icon}"/></svg></div>
+      <div><h2>${cat.title}</h2><p>${cat.blurb}</p></div>
+    </div>
+    <div class="cards">
+      ${cat.topics.map(t=>`
+        <details class="card">
+          <summary>
+            <span class="card-chevron"><svg><use href="#i-chevron"/></svg></span>
+            <span class="card-title">
+              <h3>${t.title}</h3>
+              <span class="card-tags">${t.tags.map(tg=>`<span class="tag${tg==='Cẩn trọng'||tg==='Nâng cao'?' warn':''}">${tg}</span>`).join('')}</span>
+            </span>
+          </summary>
+          <div class="card-body">${t.body}</div>
+        </details>
+      `).join('')}
+    </div>
+  `;
+  main.appendChild(sec);
+});
+
+/* ============ THEME TOGGLE ============ */
+const themeBtn = document.getElementById('themeToggle');
+function applyThemeIcon(){
+  const cur = document.documentElement.getAttribute('data-theme');
+  const isDark = cur === 'dark' || (!cur && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  themeBtn.innerHTML = `<svg><use href="#${isDark?'i-sun':'i-moon'}"/></svg>`;
+}
+try{
+  const saved = localStorage.getItem('lf-theme');
+  if(saved) document.documentElement.setAttribute('data-theme', saved);
+}catch(e){}
+applyThemeIcon();
+themeBtn.addEventListener('click', ()=>{
+  const cur = document.documentElement.getAttribute('data-theme');
+  const isDarkNow = cur === 'dark' || (!cur && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const next = isDarkNow ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  try{ localStorage.setItem('lf-theme', next); }catch(e){}
+  applyThemeIcon();
+});
+
+/* ============ CHIP NAV + SCROLL SPY ============ */
+const chips = Array.from(document.querySelectorAll('.chip'));
+chips.forEach(chip=>{
+  chip.addEventListener('click', (e)=>{
+    e.preventDefault();
+    const target = document.getElementById(chip.dataset.target);
+    if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+  });
+});
+const sections = Array.from(document.querySelectorAll('section.cat'));
+const spy = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      const id = entry.target.id;
+      chips.forEach(c=>c.classList.toggle('active', c.dataset.target===id));
+    }
+  });
+}, {rootMargin:'-160px 0px -70% 0px', threshold:0});
+sections.forEach(s=>spy.observe(s));
+
+/* ============ CHAT (sample capability) ============ */
+const chatOverlay = document.getElementById('chatOverlay');
+const chatBody = document.getElementById('chatBody');
+const chatInput = document.getElementById('chatInput');
+const chatSend = document.getElementById('chatSend');
+const chatSuggest = document.getElementById('chatSuggest');
+const chatStatus = document.getElementById('chatStatus');
+const fab = document.getElementById('fab');
+
+function openChat(){ chatOverlay.classList.add('open'); setTimeout(()=>chatInput.focus(), 150); }
+function closeChat(){ chatOverlay.classList.remove('open'); }
+document.getElementById('askBtnTop').addEventListener('click', openChat);
+fab.addEventListener('click', openChat);
+document.getElementById('chatClose').addEventListener('click', closeChat);
+chatOverlay.addEventListener('click', (e)=>{ if(e.target===chatOverlay) closeChat(); });
+
+const SUGGESTIONS = [
+  "Hội viên tập 1 tháng không giảm cân, hỏi sao?",
+  "Nên tư vấn IF thế nào cho nữ mới bắt đầu?",
+  "Hội viên hay đầy bụng sau ăn, gợi ý gì?",
+  "Cách giải thích cho hội viên về \"chững cân\"?"
+];
+chatSuggest.innerHTML = SUGGESTIONS.map(s=>`<button class="sugg">${s}</button>`).join('');
+chatSuggest.querySelectorAll('.sugg').forEach(btn=>{
+  btn.addEventListener('click', ()=>{ chatInput.value = btn.textContent; sendMessage(); });
+});
+
+function addMsg(text, cls){
+  const el = document.createElement('div');
+  el.className = 'msg ' + cls;
+  el.textContent = text;
+  chatBody.appendChild(el);
+  chatBody.scrollTop = chatBody.scrollHeight;
+  return el;
+}
+
+let chatHistory = []; // {role, content}
+
+async function sendMessage(){
+  const text = chatInput.value.trim();
+  if(!text) return;
+  chatInput.value=''; chatInput.style.height='auto';
+  chatSuggest.hidden = true;
+  addMsg(text, 'user');
+  chatHistory.push({role:'user', content:text});
+
+  const thinkingEl = addMsg('Đang soạn câu trả lời…', 'bot thinking');
+  chatSend.disabled = true;
+  chatStatus.style.background = 'var(--warn)';
+
+  try{
+    const res = await fetch('/.netlify/functions/chat', {
+      method: 'POST',
+      headers: {'content-type': 'application/json'},
+      body: JSON.stringify({ messages: chatHistory })
+    });
+    let data = {};
+    try{ data = await res.json(); }catch(e){}
+
+    if(!res.ok){
+      thinkingEl.remove();
+      let msg = 'Có lỗi xảy ra, PT thử lại sau nhé.';
+      if(data.error === 'server_not_configured') msg = 'Trợ lý AI chưa được cấu hình trên máy chủ (thiếu API key) — liên hệ quản trị để bật tính năng này.';
+      else if(res.status === 429) msg = 'Đang có quá nhiều câu hỏi cùng lúc, PT đợi một chút rồi hỏi lại nhé.';
+      else if(data.message) msg = 'Có lỗi xảy ra: ' + data.message;
+      addMsg(msg, 'err');
+      chatStatus.style.background = 'var(--danger)';
+      return;
+    }
+
+    const answer = data.text || 'Xin lỗi, mình chưa có câu trả lời — PT thử hỏi lại nhé.';
+    thinkingEl.classList.remove('thinking');
+    thinkingEl.textContent = answer;
+    chatHistory.push({role:'assistant', content:answer});
+    chatStatus.style.background = 'var(--success)';
+  }catch(e){
+    thinkingEl.remove();
+    addMsg('Không kết nối được với trợ lý AI — PT kiểm tra mạng rồi thử lại nhé.', 'err');
+    chatStatus.style.background = 'var(--danger)';
+  }finally{
+    chatSend.disabled = false;
+  }
+}
+
+chatSend.addEventListener('click', sendMessage);
+chatInput.addEventListener('keydown',(e)=>{
+  if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendMessage(); }
+});
+chatInput.addEventListener('input', ()=>{
+  chatInput.style.height='auto';
+  chatInput.style.height = Math.min(chatInput.scrollHeight,110)+'px';
+});
+// initial greeting
+addMsg('Chào PT 👋 Mình là trợ lý dinh dưỡng nội bộ của Ladysfit. PT hỏi mình bất kỳ vấn đề dinh dưỡng/nội tiết/giấc ngủ nào để tư vấn hội viên nhé — mình trả lời dựa trên đúng sổ tay kiến thức bên trái.', 'bot');
+</script>
+</body>
+</html>
