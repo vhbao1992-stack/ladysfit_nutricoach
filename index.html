@@ -8,18 +8,18 @@
 <style>
   .icon-sprite{position:absolute}
   :root{
-    --bg:#fff6f8;
-    --surface:#ffffff;
-    --surface-alt:#ffeef3;
-    --surface-raised:#fffbfc;
-    --border:#f3d9e1;
-    --text:#2b1620;
-    --text-muted:#8a6673;
-    --text-faint:#b98a99;
-    --accent:#e0487a;
-    --accent-deep:#af2c5a;
-    --accent-soft:#ffd9e6;
-    --on-accent:#fff6f8;
+    --bg:#fee2de;
+    --surface:#fffaf9;
+    --surface-alt:#fcebe7;
+    --surface-raised:#fff4f2;
+    --border:#f7d2ca;
+    --text:#301412;
+    --text-muted:#8c5551;
+    --text-faint:#bb8783;
+    --accent:#f15b5c;
+    --accent-deep:#d43f3f;
+    --accent-soft:#f7a097;
+    --on-accent:#fff6f4;
     --success:#2f8f5b;
     --success-bg:#e3f5ea;
     --warn:#b8790f;
@@ -28,7 +28,7 @@
     --danger-bg:#fbe4e6;
     --info:#3a6ea8;
     --info-bg:#e7f0fb;
-    --shadow:0 1px 2px rgba(175,44,90,.06),0 8px 24px -12px rgba(175,44,90,.18);
+    --shadow:0 1px 2px rgba(212,63,63,.08),0 8px 24px -12px rgba(212,63,63,.22);
     --radius-s:10px;
     --radius-m:16px;
     --radius-l:24px;
@@ -36,18 +36,18 @@
   }
   :root:not([data-theme="light"]){
     @media (prefers-color-scheme: dark){
-      --bg:#1a1015;
-      --surface:#241720;
-      --surface-alt:#2d1c28;
-      --surface-raised:#2a1a24;
-      --border:#3d2530;
-      --text:#f7e9ee;
-      --text-muted:#cda3b1;
-      --text-faint:#8f6572;
-      --accent:#ff7fa8;
-      --accent-deep:#ffb0c9;
-      --accent-soft:#3d1f2c;
-      --on-accent:#1a1015;
+      --bg:#1c0f0e;
+      --surface:#271614;
+      --surface-alt:#331e1a;
+      --surface-raised:#2c1917;
+      --border:#472622;
+      --text:#fbe8e4;
+      --text-muted:#d6a49d;
+      --text-faint:#946a64;
+      --accent:#ff8c81;
+      --accent-deep:#ffb3a8;
+      --accent-soft:#472621;
+      --on-accent:#1c0f0e;
       --success:#6fd39a;
       --success-bg:#173224;
       --warn:#f0b256;
@@ -61,18 +61,18 @@
     }
   }
   :root[data-theme="dark"]{
-    --bg:#1a1015;
-    --surface:#241720;
-    --surface-alt:#2d1c28;
-    --surface-raised:#2a1a24;
-    --border:#3d2530;
-    --text:#f7e9ee;
-    --text-muted:#cda3b1;
-    --text-faint:#8f6572;
-    --accent:#ff7fa8;
-    --accent-deep:#ffb0c9;
-    --accent-soft:#3d1f2c;
-    --on-accent:#1a1015;
+    --bg:#1c0f0e;
+    --surface:#271614;
+    --surface-alt:#331e1a;
+    --surface-raised:#2c1917;
+    --border:#472622;
+    --text:#fbe8e4;
+    --text-muted:#d6a49d;
+    --text-faint:#946a64;
+    --accent:#ff8c81;
+    --accent-deep:#ffb3a8;
+    --accent-soft:#472621;
+    --on-accent:#1c0f0e;
     --success:#6fd39a;
     --success-bg:#173224;
     --warn:#f0b256;
@@ -120,14 +120,14 @@
   }
   .brand{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
   .brand .mark{
-    width:38px;height:38px;border-radius:11px;flex:none;
-    background:linear-gradient(150deg,var(--accent),var(--accent-deep));
-    display:flex;align-items:center;justify-content:center;color:var(--on-accent);
+    width:40px;height:40px;border-radius:50%;flex:none;
+    background:var(--surface-alt);
+    display:flex;align-items:center;justify-content:center;
     box-shadow:var(--shadow);
   }
-  .brand .mark svg{width:20px;height:20px}
+  .brand .mark svg{width:28px;height:28px}
   .brand .word{display:flex;flex-direction:column;line-height:1.15;min-width:0}
-  .brand .word b{font-size:16px;font-weight:800;color:var(--text)}
+  .brand .word b{font-family:'Fraunces',serif;font-size:19px;font-weight:700;color:var(--text);letter-spacing:-.01em}
   .brand .word span{font-size:11.5px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .top-actions{display:flex;align-items:center;gap:8px;flex:none}
   .icon-btn{
@@ -254,10 +254,10 @@
     display:flex;align-items:center;gap:10px;padding:16px;border-bottom:1px solid var(--border);
   }
   .chat-head .mark{
-    width:34px;height:34px;border-radius:10px;background:linear-gradient(150deg,var(--accent),var(--accent-deep));
-    display:flex;align-items:center;justify-content:center;color:var(--on-accent);flex:none;
+    width:36px;height:36px;border-radius:50%;background:var(--surface-alt);
+    display:flex;align-items:center;justify-content:center;flex:none;
   }
-  .chat-head .mark svg{width:18px;height:18px}
+  .chat-head .mark svg{width:24px;height:24px}
   .chat-head .ti{flex:1;min-width:0}
   .chat-head .ti b{display:block;font-size:14.5px}
   .chat-head .ti span{display:block;font-size:11.5px;color:var(--text-muted)}
@@ -298,7 +298,7 @@
     position:fixed; right:18px; bottom:calc(18px + env(safe-area-inset-bottom,0px)); z-index:50;
     width:56px;height:56px;border-radius:50%;border:none;cursor:pointer;
     background:linear-gradient(150deg,var(--accent),var(--accent-deep));color:var(--on-accent);
-    display:flex;align-items:center;justify-content:center;box-shadow:0 10px 26px -8px rgba(175,44,90,.55);
+    display:flex;align-items:center;justify-content:center;box-shadow:0 10px 26px -8px rgba(212,63,63,.55);
   }
   .fab svg{width:24px;height:24px}
   .fab.hidden{display:none}
@@ -311,11 +311,11 @@
     *{transition:none!important}
   }
 </style>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@500;600&display=swap">
 </head>
 <body>
 <svg width="0" height="0" class="icon-sprite">
-  <symbol id="i-logo" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7.5-4.6-9.9-9.4C.6 7.9 2.9 4 6.8 4c2 0 3.6 1 5.2 3 1.6-2 3.2-3 5.2-3 3.9 0 6.2 3.9 4.7 7.6C19.5 16.4 12 21 12 21Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+  <symbol id="i-logo" viewBox="0 0 32 32"><circle cx="16" cy="13" r="12" fill="#F15B5C"/><circle cx="16" cy="16" r="8.4" fill="#F7A097"/><circle cx="16" cy="18.4" r="5.2" fill="var(--surface-alt)"/><path d="M13.2 19a2.8 2.8 0 005.6 0Z" fill="#F15B5C"/></symbol>
   <symbol id="i-flame" viewBox="0 0 24 24" fill="none"><path d="M12 3c1 3-3 4-3 8a3 3 0 006 0c0-1.5-1-2-1-3.5 2 1 3 3.5 3 5.5a5 5 0 11-10 0c0-4 3-6 5-10Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
   <symbol id="i-flower" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="2.3" stroke="currentColor" stroke-width="1.5"/><path d="M12 3c1.8 0 3 1.6 2.2 3.6C13.7 7.8 12.8 8.5 12 9.7 11.2 8.5 10.3 7.8 9.8 6.6 9 4.6 10.2 3 12 3ZM12 21c1.8 0 3-1.6 2.2-3.6-.5-1.2-1.4-1.9-2.2-3.1-.8 1.2-1.7 1.9-2.2 3.1C9 19.4 10.2 21 12 21ZM3 12c0-1.8 1.6-3 3.6-2.2 1.2.5 1.9 1.4 3.1 2.2-1.2.8-1.9 1.7-3.1 2.2C4.6 15 3 13.8 3 12ZM21 12c0-1.8-1.6-3-3.6-2.2-1.2.5-1.9 1.4-3.1 2.2 1.2.8 1.9 1.7 3.1 2.2C19.4 15 21 13.8 21 12Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
   <symbol id="i-thyroid" viewBox="0 0 24 24" fill="none"><path d="M12 5v3M7 8c-2.5 0-4 2-4 4.5S4.5 17 7 17h1.5a3.5 3.5 0 003.5-3.5 3.5 3.5 0 013.5-3.5H17c2.5 0 4 2 4 4.5s-1.5 4.5-4 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
