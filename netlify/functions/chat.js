@@ -5,7 +5,7 @@
 // Netlify site's dashboard — it is never exposed to the browser.
 
 const SYSTEM_PROMPT = `
-BẠN LÀ: Trợ lý dinh dưỡng nội bộ cho các PT (huấn luyện viên cá nhân) tại LADYSFIT — phòng tập giảm cân dành riêng cho nữ. PT sẽ hỏi bạn các câu hỏi về dinh dưỡng/thể chất để tư vấn hội viên nữ. Trả lời bằng tiếng Việt, ngôn ngữ ĐƠN GIẢN, DỄ HIỂU, đi thẳng vào giải pháp thực tế PT có thể áp dụng ngay, có thể dùng gạch đầu dòng ngắn. Nếu câu hỏi vượt ngoài kiến thức dưới đây hoặc là vấn đề y tế nghiêm trọng (bệnh nền, thuốc men, mang thai, triệu chứng bất thường), hãy nói rõ giới hạn và khuyên gặp bác sĩ/chuyên gia y tế thay vì đoán. Không đưa ra chẩn đoán y khoa.
+BẠN LÀ: Trợ lý dinh dưỡng nội bộ cho các PT (huấn luyện viên cá nhân) tại LADYSFIT — phòng tập giảm cân dành riêng cho nữ. PT sẽ hỏi bạn các câu hỏi về dinh dưỡng/thể chất để tư vấn hội viên nữ. Trả lời bằng tiếng Việt, ngôn ngữ ĐƠN GIẢN, DỄ HIỂU, đi thẳng vào giải pháp thực tế PT có thể áp dụng ngay. Viết NGẮN GỌN, khoảng 150-250 từ, tối đa 6 gạch đầu dòng. KHÔNG dùng tiêu đề Markdown (#, ##) và hạn chế **in đậm**; chỉ dùng câu văn thường và gạch đầu dòng bằng dấu -. Nếu câu hỏi vượt ngoài kiến thức dưới đây hoặc là vấn đề y tế nghiêm trọng (bệnh nền, thuốc men, mang thai, triệu chứng bất thường), hãy nói rõ giới hạn và khuyên gặp bác sĩ/chuyên gia y tế thay vì đoán. Không đưa ra chẩn đoán y khoa.
 
 KIẾN THỨC NỀN (tóm tắt để tham chiếu khi trả lời):
 
@@ -70,99 +70,169 @@ KIẾN THỨC NỀN (tóm tắt để tham chiếu khi trả lời):
 - Nữ nên biết nội tiết nền từ tuổi 20 để so sánh khi bất thường. Thở "cyclic sighing" 5 phút/ngày cải thiện tâm trạng/giấc ngủ.
 `.trim();
 
-const MAX_TURNS = 20; // keep recent context only, bound token usage per request
-const MODEL = process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-5-20250929';
+
+const MAX_TURNS = 20;              // chỉ giữ các lượt gần nhất, giới hạn token mỗi request
+const MAX_ATTEMPTS = 3;            // tự thử lại khi máy chủ AI lỗi tạm thời
+const RETRY_DELAY_MS = 1200;
+const RETRY_BUDGET_MS = 12000;     // quá mốc này thì thôi, trả lỗi ngay cho nhanh
+const MODEL = (process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-5-20250929').trim();
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// Lỗi nào đáng thử lại: nghẽn mạng, quá tải, hoặc xác thực chớp nhoáng ở gateway.
+const isRetryable = (status) =>
+  status === 401 || status === 403 || status === 408 || status === 429 || status >= 500;
+
+async function callAnthropic(apiKey, messages) {
+  let last = { status: 0, body: '' };
+  const startedAt = Date.now();
+
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    let res;
+    try {
+      res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+        },
+        body: JSON.stringify({
+          model: MODEL,
+          max_tokens: 800,
+          system: SYSTEM_PROMPT,
+          messages,
+        }),
+      });
+    } catch (err) {
+      last = { status: 0, body: 'fetch failed: ' + String((err && err.message) || err) };
+      console.error('[nutricoach] attempt', attempt, 'network error:', last.body);
+      if (attempt < MAX_ATTEMPTS) { await sleep(RETRY_DELAY_MS * attempt); continue; }
+      return { ok: false, ...last };
+    }
+
+    if (res.ok) {
+      const data = await res.json();
+      if (attempt > 1) console.log('[nutricoach] succeeded on attempt', attempt);
+      return { ok: true, data };
+    }
+
+    const body = (await res.text()).slice(0, 800);
+    last = { status: res.status, body };
+
+    // Log đầy đủ vào Netlify function logs để soi khi có sự cố.
+    console.error(
+      '[nutricoach] attempt', attempt, 'upstream', res.status,
+      '| request-id:', res.headers.get('request-id') || 'n/a',
+      '| body:', body
+    );
+
+    const timeLeft = Date.now() - startedAt < RETRY_BUDGET_MS;
+    if (isRetryable(res.status) && attempt < MAX_ATTEMPTS && timeLeft) {
+      await sleep(RETRY_DELAY_MS * attempt);
+      continue;
+    }
+    return { ok: false, ...last };
+  }
+
+  return { ok: false, ...last };
+}
 
 exports.handler = async (event) => {
   const cors = {
     'access-control-allow-origin': '*',
     'access-control-allow-headers': 'content-type',
-    'access-control-allow-methods': 'POST, OPTIONS',
+    'access-control-allow-methods': 'GET, POST, OPTIONS',
   };
+  const json = (statusCode, obj) => ({
+    statusCode,
+    headers: { ...cors, 'content-type': 'application/json' },
+    body: JSON.stringify(obj),
+  });
 
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 204, headers: cors, body: '' };
+  let rawKey = '';
+  try {
+    rawKey = process.env.ANTHROPIC_API_KEY || '';
+  } catch (err) {
+    // Netlify đôi khi không lấy được biến môi trường dạng secret -> lỗi hạ tầng tạm thời
+    console.error('[nutricoach] không đọc được ANTHROPIC_API_KEY:', String((err && err.message) || err));
+    return {
+      statusCode: 503,
+      headers: { ...cors, 'content-type': 'application/json' },
+      body: JSON.stringify({
+        error: 'env_unavailable',
+        message: 'Máy chủ tạm thời không lấy được cấu hình — thử lại sau ít giây.',
+      }),
+    };
   }
-  if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, headers: cors, body: JSON.stringify({ error: 'method_not_allowed' }) };
+  const apiKey = rawKey.trim();
+
+  if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: cors, body: '' };
+
+  // Kiểm tra cấu hình nhanh: /.netlify/functions/chat?diag=1  (không lộ API key)
+  if (event.httpMethod === 'GET') {
+    return json(200, {
+      ok: true,
+      hasKey: apiKey.length > 0,
+      keyLooksValid: apiKey.startsWith('sk-ant-'),
+      keyHadWhitespace: rawKey !== apiKey,
+      model: MODEL,
+      node: process.version,
+      time: new Date().toISOString(),
+    });
   }
+
+  if (event.httpMethod !== 'POST') return json(405, { error: 'method_not_allowed' });
 
   let payload;
   try {
     payload = JSON.parse(event.body || '{}');
   } catch (e) {
-    return { statusCode: 400, headers: cors, body: JSON.stringify({ error: 'invalid_json' }) };
+    return json(400, { error: 'invalid_json' });
   }
 
   const messages = Array.isArray(payload.messages) ? payload.messages : [];
-  if (messages.length === 0) {
-    return { statusCode: 400, headers: cors, body: JSON.stringify({ error: 'missing_messages' }) };
-  }
+  if (messages.length === 0) return json(400, { error: 'missing_messages' });
 
-  const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
-    return {
-      statusCode: 500,
-      headers: cors,
-      body: JSON.stringify({
-        error: 'server_not_configured',
-        message: 'Thiếu biến môi trường ANTHROPIC_API_KEY trên Netlify.',
-      }),
-    };
+    console.error('[nutricoach] ANTHROPIC_API_KEY chưa được cấu hình trên Netlify');
+    return json(500, {
+      error: 'server_not_configured',
+      message: 'Thiếu biến môi trường ANTHROPIC_API_KEY trên Netlify.',
+    });
+  }
+  if (!apiKey.startsWith('sk-ant-')) {
+    console.error('[nutricoach] API key sai định dạng (không bắt đầu bằng sk-ant-)');
+    return json(500, {
+      error: 'server_key_invalid_format',
+      message: 'API key trên Netlify sai định dạng — cần bắt đầu bằng sk-ant-.',
+    });
   }
 
-  // Keep only the most recent turns, sanitized to {role, content} strings.
   const trimmed = messages
     .filter((m) => m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string')
     .slice(-MAX_TURNS)
     .map((m) => ({ role: m.role, content: m.content.slice(0, 4000) }));
 
   if (trimmed.length === 0 || trimmed[0].role !== 'user') {
-    return { statusCode: 400, headers: cors, body: JSON.stringify({ error: 'invalid_messages' }) };
+    return json(400, { error: 'invalid_messages' });
   }
 
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
-        model: MODEL,
-        max_tokens: 1024,
-        system: SYSTEM_PROMPT,
-        messages: trimmed,
-      }),
+  const result = await callAnthropic(apiKey, trimmed);
+
+  if (!result.ok) {
+    return json(result.status && result.status >= 400 ? result.status : 502, {
+      error: 'upstream_error',
+      upstreamStatus: result.status,
+      message: result.body || 'Không gọi được máy chủ AI.',
     });
-
-    if (!res.ok) {
-      const errBody = await res.text();
-      return {
-        statusCode: res.status,
-        headers: cors,
-        body: JSON.stringify({ error: 'upstream_error', message: errBody.slice(0, 500) }),
-      };
-    }
-
-    const data = await res.json();
-    const text = (data.content || [])
-      .filter((block) => block.type === 'text')
-      .map((block) => block.text)
-      .join('')
-      .trim();
-
-    return {
-      statusCode: 200,
-      headers: { ...cors, 'content-type': 'application/json' },
-      body: JSON.stringify({ text }),
-    };
-  } catch (err) {
-    return {
-      statusCode: 500,
-      headers: cors,
-      body: JSON.stringify({ error: 'internal_error', message: String(err && err.message || err) }),
-    };
   }
+
+  const text = (result.data.content || [])
+    .filter((block) => block.type === 'text')
+    .map((block) => block.text)
+    .join('')
+    .trim();
+
+  return json(200, { text });
 };
