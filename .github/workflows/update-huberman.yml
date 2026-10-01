@@ -1,0 +1,39 @@
+name: Cập nhật kiến thức Huberman Lab
+
+# Chạy 9h sáng thứ Tư giờ Việt Nam (02:00 UTC), và cho phép bấm chạy tay.
+on:
+  schedule:
+    - cron: '0 2 * * 3'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Lấy mã nguồn
+        uses: actions/checkout@v4
+
+      - name: Cài Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Tìm và soạn kiến thức mới
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/update-huberman.mjs
+
+      - name: Commit nếu có nội dung mới
+        run: |
+          if [ -z "$(git status --porcelain index.html netlify/functions/chat.js)" ]; then
+            echo "Không có thay đổi — bỏ qua commit."
+            exit 0
+          fi
+          git config user.name "Ladysfit NutriCoach Bot"
+          git config user.email "actions@github.com"
+          git add index.html netlify/functions/chat.js
+          git commit -m "Tu dong cap nhat kien thuc Huberman Lab ($(date +%d/%m/%Y))"
+          git push
