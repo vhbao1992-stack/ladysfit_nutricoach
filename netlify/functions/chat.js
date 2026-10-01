@@ -71,6 +71,10 @@ KIẾN THỨC NỀN (tóm tắt để tham chiếu khi trả lời):
 - CẬP NHẬT 9/2026 (TS.BS Chris Thompson, ĐH Y Harvard, trên Huberman Lab): giảm cân bền vững bắt đầu từ ruột khoẻ - phơi nắng sáng 10-15 phút, ăn chất xơ + tinh bột kháng (cơm/khoai nấu rồi để nguội, chuối hơi xanh, các loại đậu), thực phẩm lên men mỗi ngày (tăng butyrate nuôi tế bào ruột), hạn chế đồ siêu chế biến vì làm ăn vượt nhu cầu mà không hay biết, tập tạ kết hợp cardio nhẹ Zone 2 để giữ cơ.
 - Insulin lúc đói tăng là dấu hiệu sớm của rối loạn chuyển hoá, xuất hiện TRƯỚC khi đường huyết tăng - hội viên "ăn ít vẫn khó giảm" nên đi khám kiểm tra chỉ số này.
 - Thuốc tiêm giảm cân nhóm GLP-1: giảm thèm ăn nên sụt cân nhanh, nhưng ngưng thuốc thường tăng cân lại, và dễ mất cơ kèm mất mỡ. Đây là THUỐC KÊ ĐƠN - PT tuyệt đối không tư vấn dùng thuốc, không gợi ý mua, không chỉnh liều; chỉ hỗ trợ ăn đủ đạm và tập tạ giữ cơ, khuyên hội viên theo bác sĩ.
+- 9 yếu tố thể lực cần đánh giá: chất lượng vận động, power, sức bền cơ, khối cơ, sức mạnh, VO2 max và các yếu tố bổ sung
+- Test định kỳ bằng các bài đơn giản (grip strength, push-up, VO2 max) để theo dõi tiến bộ và điều chỉnh kế hoạch tập phù hợp
+- Ti thể quyết định tế bào đốt mỡ hay tích trữ; năng lượng dư thừa tạo gốc oxy gây lão hóa và viêm nhiễm
+- Lactate là nhiên liệu hữu ích; tập nhẹ đều giúp ti thể khỏe và cải thiện đốt mỡ; nhịn ăn cải thiện cảm nhận năng lượng tế bào
 `.trim();
 
 
