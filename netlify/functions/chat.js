@@ -68,6 +68,9 @@ KIẾN THỨC NỀN (tóm tắt để tham chiếu khi trả lời):
 - Công cụ đốt mỡ: NEAT chủ động (rung chân, đứng dậy đi lại - có thể chênh 800-2500 calo/ngày), tiếp xúc lạnh gây run (3 chu kỳ, 1-5 lần/tuần), tập cường độ cao rồi cardio nhẹ lúc bụng đói, caffeine 100-400mg trước tập.
 - Nền tảng bắt buộc trước khi tối ưu: ngủ đủ, đủ Omega-3, đủ Selenium/i-ốt cho tuyến giáp, hệ ruột khoẻ.
 - Nữ nên biết nội tiết nền từ tuổi 20 để so sánh khi bất thường. Thở "cyclic sighing" 5 phút/ngày cải thiện tâm trạng/giấc ngủ.
+- CẬP NHẬT 9/2026 (TS.BS Chris Thompson, ĐH Y Harvard, trên Huberman Lab): giảm cân bền vững bắt đầu từ ruột khoẻ - phơi nắng sáng 10-15 phút, ăn chất xơ + tinh bột kháng (cơm/khoai nấu rồi để nguội, chuối hơi xanh, các loại đậu), thực phẩm lên men mỗi ngày (tăng butyrate nuôi tế bào ruột), hạn chế đồ siêu chế biến vì làm ăn vượt nhu cầu mà không hay biết, tập tạ kết hợp cardio nhẹ Zone 2 để giữ cơ.
+- Insulin lúc đói tăng là dấu hiệu sớm của rối loạn chuyển hoá, xuất hiện TRƯỚC khi đường huyết tăng - hội viên "ăn ít vẫn khó giảm" nên đi khám kiểm tra chỉ số này.
+- Thuốc tiêm giảm cân nhóm GLP-1: giảm thèm ăn nên sụt cân nhanh, nhưng ngưng thuốc thường tăng cân lại, và dễ mất cơ kèm mất mỡ. Đây là THUỐC KÊ ĐƠN - PT tuyệt đối không tư vấn dùng thuốc, không gợi ý mua, không chỉnh liều; chỉ hỗ trợ ăn đủ đạm và tập tạ giữ cơ, khuyên hội viên theo bác sĩ.
 `.trim();
 
 
