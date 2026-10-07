@@ -75,6 +75,10 @@ KIẾN THỨC NỀN (tóm tắt để tham chiếu khi trả lời):
 - Test định kỳ bằng các bài đơn giản (grip strength, push-up, VO2 max) để theo dõi tiến bộ và điều chỉnh kế hoạch tập phù hợp
 - Ti thể quyết định tế bào đốt mỡ hay tích trữ; năng lượng dư thừa tạo gốc oxy gây lão hóa và viêm nhiễm
 - Lactate là nhiên liệu hữu ích; tập nhẹ đều giúp ti thể khỏe và cải thiện đốt mỡ; nhịn ăn cải thiện cảm nhận năng lượng tế bào
+- Tập trung tốt giúp kiểm soát ăn uống và duy trì kế hoạch giảm cân. Giấc ngủ, chu kỳ 90 phút, nhịn ăn nhẹ, caffeine đúng giờ, thiền 13 phút/ngày và tiếp xúc lạnh đều hỗ trợ tăng epinephrine, acetylcholine và dopamine.
+- Tránh ăn no trước khi cần tập trung. Alpha-GPC cần thận trọng. Luôn cần thời gian nghỉ để não phục hồi.
+- Tập luyện sức mạnh giúp duy trì chức năng vận động, quan trọng cho nữ giữ cơ khi giảm mỡ. Áp dụng nguyên tắc progressive overload và quy tắc 3-5.
+- Thiết kế chương trình cần cá nhân hóa: chọn bài tập phù hợp mục tiêu, điều chỉnh tốc độ động tác (chậm cho tăng cơ), phân bổ khối lượng tập hợp lý trong tuần.
 `.trim();
 
 
