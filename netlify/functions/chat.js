@@ -83,6 +83,10 @@ KIẾN THỨC NỀN (tóm tắt để tham chiếu khi trả lời):
 - Khuyến khích hội viên hạn chế thực phẩm chế biến, ăn chánh niệm để cải thiện khả năng nhớ bữa ăn và kiểm soát cảm giác đói
 - Căng thẳng mãn tính làm giảm khả năng đốt mỡ và ảnh hưởng sức khỏe tế bào.
 - Công cụ: chuyển đổi nhận thức stress thành thử thách, chấp nhận triệt để điều không kiểm soát, tư thế + thở chậm, xây dựng mục đích rõ ràng.
+- Vùng anterior midcingulate cortex trong não giúp duy trì sức bền trong thử thách; càng luyện tập vượt khó càng mạnh hơn.
+- Xây dựng nhiều nguồn động lực (tự trọng, gia đình, sức khỏe) thay vì chỉ một mục tiêu giảm cân giúp hội viên kiên trì lâu dài hơn.
+- Thực phẩm chức năng chỉ bổ trợ sau khi đã làm tốt hành vi &amp; dinh dưỡng. Ưu tiên hỏi về giấc ngủ, chế độ ăn, ngân sách.
+- Bổ sung giấc ngủ: magnesium threonate/apigenin (khó ngủ), myo-inositol (tỉnh giữa đêm). Luôn thử từng thành phần đơn lẻ.
 `.trim();
 
 
