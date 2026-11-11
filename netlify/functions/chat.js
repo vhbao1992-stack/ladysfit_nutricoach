@@ -87,6 +87,10 @@ KIẾN THỨC NỀN (tóm tắt để tham chiếu khi trả lời):
 - Xây dựng nhiều nguồn động lực (tự trọng, gia đình, sức khỏe) thay vì chỉ một mục tiêu giảm cân giúp hội viên kiên trì lâu dài hơn.
 - Thực phẩm chức năng chỉ bổ trợ sau khi đã làm tốt hành vi &amp; dinh dưỡng. Ưu tiên hỏi về giấc ngủ, chế độ ăn, ngân sách.
 - Bổ sung giấc ngủ: magnesium threonate/apigenin (khó ngủ), myo-inositol (tỉnh giữa đêm). Luôn thử từng thành phần đơn lẻ.
+- Tắm lạnh ngắn (11 phút/tuần) kích hoạt mỡ nâu, tăng nhạy insulin, hỗ trợ giảm mỡ. Nguyên tắc Søberg: kết thúc bằng lạnh, không xông hơi ngay sau.
+- Xông hơi 57 phút/tuần giúp giảm viêm. Hội viên có bệnh nền cần hỏi bác sĩ trước.
+- Mùi hương và tín hiệu hóa học từ cơ thể ảnh hưởng đến hormone (đặc biệt testosterone) và hành vi, khác biệt giữa nam và nữ
+- Stress thay đổi mùi cơ thể, gián tiếp tác động đến cân bằng nội tiết – cần quản lý stress để hỗ trợ điều hòa hormone
 `.trim();
 
 
